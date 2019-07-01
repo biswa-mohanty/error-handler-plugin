@@ -36,6 +36,19 @@ Add this dependency to your application pom.xml
 - Delete the auto-generated error blocks (on-error-propagate/on-error-continue) before using this module.
 - Place the plugin inside an error block (on-error-propagate/on-error-continue) along with a variable for httpStatus.
 
+## HTTP Listener Configuration
+The error response should be changed to the following to send back the populated error message.
+```
+<http:listener doc:name="Listener" doc:id="1d3566ad-c8dc-4b8a-ab45-338625c74afb" config-ref="HTTP_Listener_config" path="/error">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+```
 
 ## Tabs
 
